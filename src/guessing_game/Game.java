@@ -66,9 +66,20 @@ public class Game {
     public static boolean guessLetter() {
         System.out.println("Guess letter: ");
         Scanner scan = new Scanner(System.in);
-        char letter = scan.next().charAt(0);
-        return letter >= 65 && letter <= 122;
+        String input = scan.nextLine();
+        char letter = input.charAt(0);
+        return letter >= 65 && letter <= 122 && input.length()<2;
+        /*
+        *
+        *
+        *               TO DO
+        *       CHECK THE COUNTER INCREMENT IF IT'S NECESSARY
+        *       PUT THE USED LETTER INSIDE THE LIST (usedLetters)
+        *
+        *
+        * */
+
+
+
     }
-
-
 }
