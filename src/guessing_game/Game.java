@@ -1,6 +1,8 @@
 package guessing_game;
 
 
+import com.sun.tools.internal.xjc.AbortException;
+
 import java.util.*;
 import java.io.*;
 import java.util.List;
@@ -24,20 +26,20 @@ public class Game {
      * @param
      * @return
      */
-
     public void newGame() {
         createCities();
         randomCity();
         underscoreCity();
-        guessLetter();
+        if (guessLetter()) {
+
+        }
     }
     public void randomCity() {
         Random random = new Random();
-
         guessedCity = Arrays.asList(cities.get(random.nextInt(cities.size())));
     }
 
-    public String underscoreCity() {
+    public static String underscoreCity() {
         String a = "";
         for (int i = 0; i < guessedCity.size(); i++) {
             a += "_ ";
@@ -58,16 +60,11 @@ public class Game {
             System.out.println("Error reading: " + FILE_PATH);
         }
     }
-    public static String guessLetter() {
+    public static boolean guessLetter() {
         System.out.println("Guess letter: ");
         Scanner scan = new Scanner(System.in);
         char letter = scan.next().charAt(0);
-        int ascii = (int) letter;
-        if (ascii > 65 && ascii <= 122) {
-            return String.valueOf(letter);
-        } else {
-            return "Invalid character, try again: ";
-        }
+        return letter >= 65 && letter <= 122;
     }
 
 }
