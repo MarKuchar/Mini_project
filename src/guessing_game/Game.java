@@ -1,10 +1,8 @@
 package guessing_game;
 
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,23 +15,31 @@ public class Game {
 
     private static String FILE_PATH = "cities.txt";
     private static List<String> cities = new ArrayList<String>();
-    private static String guessedCity;
+    private static List guessedCity = new ArrayList<String>();
 
 
     /**
      * Method
      *
-     * @param cities
+     * @param
      * @return
      */
-    public static void randomCity(List<String> cities) {
+
+    public void newGame() {
+        createCities();
+        randomCity();
+        underscoreCity();
+        guessLetter();
+    }
+    public void randomCity() {
         Random random = new Random();
-        guessedCity = cities.get(random.nextInt(cities.size()));
+
+        guessedCity = Arrays.asList(cities.get(random.nextInt(cities.size())));
     }
 
-    public static String underscoreCity() {
+    public String underscoreCity() {
         String a = "";
-        for (int i = 0; i < guessedCity.length(); i++) {
+        for (int i = 0; i < guessedCity.size(); i++) {
             a += "_ ";
         }
         return a;
@@ -51,6 +57,17 @@ public class Game {
             e.printStackTrace();
             System.out.println("Error reading: " + FILE_PATH);
         }
-
     }
+    public static String guessLetter() {
+        System.out.println("Guess letter: ");
+        Scanner scan = new Scanner(System.in);
+        char letter = scan.next().charAt(0);
+        int ascii = (int) letter;
+        if (ascii > 65 && ascii <= 122) {
+            return String.valueOf(letter);
+        } else {
+            return "Invalid character, try again: ";
+        }
+    }
+
 }
