@@ -1,10 +1,10 @@
 package guessing_game;
 
 
-import java.util.List;
-import java.util.Random;
+import com.sun.jdi.ArrayReference;
+
+import java.util.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,23 +17,40 @@ public class Game {
 
     private static String FILE_PATH = "cities.txt";
     private static List<String> cities = new ArrayList<String>();
-    private static String guessedCity;
+    private static List<Character> guessedCity = new ArrayList<Character>();
+    private static List<Character> usedLetters = new ArrayList<Character>();
 
 
-    /**
-     * Method
-     *
-     * @param cities
-     * @return
-     */
-    public static void randomCity(List<String> cities) {
+    public Game() {
+        this.guessedCity= new ArrayList<Character>();
+   }
+    /*
+    *
+    *
+    *       METHODS
+    *
+    * */
+    public void newGame(){
+        createCities();
+        randomCity();
+        System.out.println(guessedCity);
+        System.out.println(underscoreCity());
+
+    }
+
+
+
+    public static void randomCity() {
         Random random = new Random();
-        guessedCity = cities.get(random.nextInt(cities.size()));
+        String city = cities.get(random.nextInt(cities.size()));
+        for(char letter : city.toCharArray()){
+            guessedCity.add(letter);
+        }
     }
 
     public static String underscoreCity() {
         String a = "";
-        for (int i = 0; i < guessedCity.length(); i++) {
+        for (int i = 0; i < guessedCity.size(); i++) {
             a += "_ ";
         }
         return a;
@@ -51,6 +68,5 @@ public class Game {
             e.printStackTrace();
             System.out.println("Error reading: " + FILE_PATH);
         }
-
     }
 }
