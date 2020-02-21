@@ -1,7 +1,4 @@
 package guessing_game;
-
-
-import com.sun.jdi.ArrayReference;
 import java.util.*;
 import java.io.*;
 import java.util.List;
@@ -24,7 +21,6 @@ public class Game {
    }
     /*
     *
-    *
     *       METHODS
     *
     * */
@@ -37,21 +33,12 @@ public class Game {
         }
     }
 
-
-    /**
-     * Method
-     *
-     * @param
-     * @return
-     */
-
     public void newGame(){
         createCities();
         randomCity();
         underscoreCity();
         while(true){
-
-            guessLetter();
+            System.out.println((guessLetter()));
         }
     }
 
@@ -76,17 +63,11 @@ public class Game {
             System.out.println("Error reading: " + FILE_PATH);
         }
     }
-    public static String guessLetter(){
+    public static boolean guessLetter() {
         System.out.println("Guess letter: ");
         Scanner scan = new Scanner(System.in);
         char letter = scan.next().charAt(0);
-        int ascii = (int) letter;
-        System.out.println(ascii);
-        //65 - 122
-        if ((int)ascii >= (int)65 && (int)ascii <= (int)122) {
-            return String.valueOf(letter);
-        }
-        return "Invalid character, try again: ";
+        return letter >= 65 && letter <= 122;
     }
 
 
