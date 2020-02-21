@@ -2,7 +2,6 @@ package guessing_game;
 
 
 import com.sun.jdi.ArrayReference;
-
 import java.util.*;
 import java.io.*;
 import java.util.List;
@@ -20,7 +19,6 @@ public class Game {
     private static List<Character> guessedCity = new ArrayList<Character>();
     private static List<Character> usedLetters = new ArrayList<Character>();
 
-
     public Game() {
         this.guessedCity= new ArrayList<Character>();
    }
@@ -30,21 +28,30 @@ public class Game {
     *       METHODS
     *
     * */
-    public void newGame(){
-        createCities();
-        randomCity();
-        System.out.println(guessedCity);
-        System.out.println(underscoreCity());
-
-    }
-
-
 
     public static void randomCity() {
         Random random = new Random();
         String city = cities.get(random.nextInt(cities.size()));
-        for(char letter : city.toCharArray()){
+        for (char letter : city.toCharArray()) {
             guessedCity.add(letter);
+        }
+    }
+
+
+    /**
+     * Method
+     *
+     * @param
+     * @return
+     */
+
+    public void newGame(){
+        createCities();
+        randomCity();
+        underscoreCity();
+        while(true){
+
+            guessLetter();
         }
     }
 
@@ -56,7 +63,7 @@ public class Game {
         return a;
     }
 
-    public static void createCities () {
+    public static void createCities(){
         File file = new File(FILE_PATH);
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -69,4 +76,18 @@ public class Game {
             System.out.println("Error reading: " + FILE_PATH);
         }
     }
+    public static String guessLetter(){
+        System.out.println("Guess letter: ");
+        Scanner scan = new Scanner(System.in);
+        char letter = scan.next().charAt(0);
+        int ascii = (int) letter;
+        System.out.println(ascii);
+        //65 - 122
+        if ((int)ascii >= (int)65 && (int)ascii <= (int)122) {
+            return String.valueOf(letter);
+        }
+        return "Invalid character, try again: ";
+    }
+
+
 }
