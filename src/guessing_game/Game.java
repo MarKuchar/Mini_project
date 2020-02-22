@@ -16,6 +16,12 @@ public class Game {
     private static List<Character> guessedCity = new ArrayList<Character>();
     private static List<Character> usedLetters = new ArrayList<Character>();
 
+    /*
+    *
+    * Constructor
+    *
+    * */
+
     public Game() {
         this.guessedCity= new ArrayList<Character>();
    }
@@ -36,13 +42,15 @@ public class Game {
     public void newGame(){
         createCities();
         randomCity();
-        underscoreCity();
+        System.out.println(guessedCity);
+        System.out.println(underscoredCity());
         while(true){
             System.out.println((guessLetter()));
+            System.out.println(revealLetter());
         }
     }
 
-    public static String underscoreCity() {
+    public static String underscoredCity() {
         String a = "";
         for (int i = 0; i < guessedCity.size(); i++) {
             a += "_ ";
@@ -66,8 +74,23 @@ public class Game {
     public static boolean guessLetter() {
         System.out.println("Guess letter: ");
         Scanner scan = new Scanner(System.in);
-        char letter = scan.next().charAt(0);
-        return letter >= 65 && letter <= 122;
+        String input = scan.nextLine();
+        char letter = input.charAt(0);
+        return letter >= 65 && letter <= 122 && input.length() < 2;
+    }
+
+    public static String revealLetter() {
+        String revealedLetters = "";
+        for (int i = 0; i < guessedCity.size(); i++) {
+            if (guessedCity.get(i).equals(usedLetters.get(0))) {
+                revealedLetters += (usedLetters.get(0)) + " ";
+            } else if (guessedCity.get(i).equals((usedLetters.get(0))) && i == 0) {
+                revealedLetters += (usedLetters.get(0)).toString().toUpperCase();
+                } else {
+                revealedLetters += "_ ";
+            }
+        }
+        return revealedLetters;
     }
 
 
