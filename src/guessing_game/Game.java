@@ -15,6 +15,9 @@ public class Game {
     private static List<String> cities = new ArrayList<String>();
     private static List<Character> guessedCity = new ArrayList<Character>();
     private static List<Character> usedLetters = new ArrayList<Character>();
+    private static int numOfGuesses;
+    private static String revealedLetters;
+    private static List<Character> underscoreCity = new ArrayList<Character>();
 
     /*
     *
@@ -40,22 +43,33 @@ public class Game {
     }
 
     public void newGame(){
+        usedLetters.add('i');
+        usedLetters.add('a');
+        usedLetters.add('a');
+        numOfGuesses = 2;
         createCities();
         randomCity();
+        underscoredCity();
         System.out.println(guessedCity);
         System.out.println(underscoredCity());
+        System.out.println(revealLetter());
         while(true){
             System.out.println((guessLetter()));
             System.out.println(revealLetter());
         }
     }
 
-    public static String underscoredCity() {
-        String a = "";
+    public static char[] underscoredCity() {
+        String underscore = "";
         for (int i = 0; i < guessedCity.size(); i++) {
-            a += "_ ";
+            if (guessedCity.get(i) == ' ') {
+                underscore += " ";
+            } else {
+                underscore += "_";
+            }
         }
-        return a;
+        char[] underscoreCity = underscore.toCharArray();
+        return underscoreCity;
     }
 
     public static void createCities(){
@@ -76,22 +90,30 @@ public class Game {
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine();
         char letter = input.charAt(0);
+        /*
+        *
+        * number of guesses - I always take a letter from 'usedLetters(numOfGuesses - 1) to compare with letters in the City
+        *                     each attempt will be += 1, (If guesser guess right, we will also count + 1
+        * getter - to get usedLetters
+        *
+        * */
+
         return letter >= 65 && letter <= 122 && input.length() < 2;
     }
 
-    public static String revealLetter() {
-        String revealedLetters = "";
-        for (int i = 0; i < guessedCity.size(); i++) {
-            if (guessedCity.get(i).equals(usedLetters.get(0))) {
-                revealedLetters += (usedLetters.get(0)) + " ";
-            } else if (guessedCity.get(i).equals((usedLetters.get(0))) && i == 0) {
-                revealedLetters += (usedLetters.get(0)).toString().toUpperCase();
-                } else {
-                revealedLetters += "_ ";
+    public static char[] revealLetter() {
+        char[] test = underscoredCity();
+        for(int i = 0; i < guessedCity.size(); i++) {
+            if (guessedCity.get(i).equals(usedLetters.get(numOfGuesses - 1))) {
+                test[i] = usedLetters.get(numOfGuesses - 1);
+            } else if (guessedCity.get(i).equals((usedLetters.get(numOfGuesses - 1))) && i == 0) {
+                test[i] = usedLetters.get(numOfGuesses - 1);
+            } else if (test[i] == ' ') {
+                continue;
+            } else {
+                continue;
             }
         }
-        return revealedLetters;
+        return test;
     }
-
-
 }
