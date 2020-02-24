@@ -15,6 +15,7 @@ public class Game {
     private static List<String> cities = new ArrayList<String>();
     private static List<Character> guessedCity = new ArrayList<Character>();
     private static List<Character> usedLetters = new ArrayList<Character>();
+    private static int guessing = 0;
 
     public Game() {
         this.guessedCity= new ArrayList<Character>();
@@ -36,9 +37,11 @@ public class Game {
     public void newGame(){
         createCities();
         randomCity();
+        System.out.println(Arrays.toString(guessedCity.toArray()));
         underscoreCity();
         while(true){
-            System.out.println((guessLetter()));
+            guessLetter();
+            System.out.println(Arrays.toString(usedLetters.toArray()));
         }
     }
 
@@ -63,12 +66,27 @@ public class Game {
             System.out.println("Error reading: " + FILE_PATH);
         }
     }
-    public static boolean guessLetter() {
-        System.out.println("Guess letter: ");
+    public static void guessLetter() {
         Scanner scan = new Scanner(System.in);
-        String input = scan.nextLine();
-        char letter = input.charAt(0);
-        return letter >= 65 && letter <= 122 && input.length()<2;
+        char letter;
+        boolean validInput = false;
+        do{
+            System.out.println("Guess letter: ");
+            String input = scan.nextLine();
+            letter = input.charAt(0);
+            if(!(letter >= 65 && letter <= 122 && input.length()<2)){
+                System.out.println("Please try again, remember that you only can put 1 character and must be between A/a to Z/z");
+                validInput = false;
+            }else{
+                if(usedLetters.contains(letter)){
+                    validInput = false;
+                    System.out.println("You already used that letter");
+                }else{
+                    guessing++;
+                    usedLetters.add(letter);
+                }
+            }
+        }while(validInput);
         /*
         *
         *
