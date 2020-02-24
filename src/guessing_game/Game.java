@@ -15,7 +15,15 @@ public class Game {
     private static List<String> cities = new ArrayList<String>();
     private static List<Character> guessedCity = new ArrayList<Character>();
     private static List<Character> usedLetters = new ArrayList<Character>();
-    private static int guessing = 0;
+    private static int numOfGuesses;
+    private static String revealedLetters;
+    private static List<Character> underscoreCity = new ArrayList<Character>();
+
+    /*
+    *
+    * Constructor
+    *
+    * */
 
     public Game() {
         this.guessedCity= new ArrayList<Character>();
@@ -34,23 +42,35 @@ public class Game {
         }
     }
 
-    public void newGame(){
+    public void newGame() {
         createCities();
         randomCity();
-        System.out.println(Arrays.toString(guessedCity.toArray()));
-        underscoreCity();
-        while(true){
-            guessLetter();
-            System.out.println(Arrays.toString(usedLetters.toArray()));
+        underscoredCity();
+        System.out.println(guessedCity);
+        for (int i = 0; i < 10; i++) {
+            System.out.println("used letters: "+usedLetters);
+            if (underscoreCity.contains('_')) {
+                    guessLetter();
+                    // how to set a permanent variable in reveald Letters, not to be always rewritten
+                    revealLetter();
+                    System.out.println(Arrays.toString(underscoreCity.toArray()));
+
+                } else if (!underscoreCity.contains('_')) {
+                    System.out.println("You guessed the city!");
+                }
         }
+        System.out.println("Game over!");
     }
 
-    public static String underscoreCity() {
-        String a = "";
+
+    public static void underscoredCity(){
         for (int i = 0; i < guessedCity.size(); i++) {
-            a += "_ ";
+            if (guessedCity.get(i) == ' ') {
+                underscoreCity.add((" ").charAt(0));
+            } else {
+                underscoreCity.add(("_").charAt(0));
+            }
         }
-        return a;
     }
 
     public static void createCities(){
@@ -66,7 +86,7 @@ public class Game {
             System.out.println("Error reading: " + FILE_PATH);
         }
     }
-    public static void guessLetter() {
+    public static void guessLetter(){
         Scanner scan = new Scanner(System.in);
         char letter;
         boolean validInput = false;
@@ -82,22 +102,26 @@ public class Game {
                     validInput = false;
                     System.out.println("You already used that letter");
                 }else{
-                    guessing++;
-                    usedLetters.add(letter);
+                    numOfGuesses++;
+                    usedLetters.add(String.valueOf(letter).toLowerCase().charAt(0));
+                    usedLetters.add(String.valueOf(letter).toUpperCase().charAt(0));
                 }
             }
         }while(validInput);
-        /*
-        *
-        *
-        *               TO DO
-        *       CHECK THE COUNTER INCREMENT IF IT'S NECESSARY
-        *       PUT THE USED LETTER INSIDE THE LIST (usedLetters)
-        *
-        *
-        * */
 
+    }
 
-
+    public static boolean revealLetter() {
+        for(int i = 0; i < guessedCity.size(); i++) {
+            if(usedLetters.contains(guessedCity.get(i))){
+                underscoreCity.set(i, guessedCity.get(i));
+                return true;
+            }else if (usedLetters.contains(guessedCity.get(i)) && i == 0){
+                underscoreCity.set(i, guessedCity.get(i));
+                return true;
+            }
+        }
+        System.out.println("You have guessed ("+numOfGuesses+") wrong letter:"+ usedLetters.get(0) );
+        return false;
     }
 }
