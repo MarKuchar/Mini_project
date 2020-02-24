@@ -42,22 +42,30 @@ public class Game {
         }
     }
 
-    public void newGame(){
-        usedLetters.add('i');
-        usedLetters.add('a');
-        usedLetters.add('a');
-        numOfGuesses = 2;
+    public void newGame() {
         createCities();
         randomCity();
         underscoredCity();
+        usedLetters.add('a');
         System.out.println(guessedCity);
         System.out.println(underscoredCity());
-        System.out.println(revealLetter());
-        while(true){
-            System.out.println((guessLetter()));
-            System.out.println(revealLetter());
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; i < revealLetter().length; j++) {
+                if (revealLetter()[i] == '_') {
+                    char[] test = underscoredCity();
+                    System.out.println(guessLetter());
+                    // how to set a permanent variable in revealdLetters, not to be always rewritten
+                    System.out.println(revealLetter());
+
+                } else if (j == revealLetter().length && revealLetter()[i] != '_') {
+                    System.out.println("You guessed the city!");
+                }
+            }
+
         }
+        System.out.println("Game over!");
     }
+
 
     public static char[] underscoredCity() {
         String underscore = "";
@@ -90,6 +98,8 @@ public class Game {
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine();
         char letter = input.charAt(0);
+        usedLetters.add(letter);
+
         /*
         *
         * number of guesses - I always take a letter from 'usedLetters(numOfGuesses - 1) to compare with letters in the City
@@ -104,10 +114,10 @@ public class Game {
     public static char[] revealLetter() {
         char[] test = underscoredCity();
         for(int i = 0; i < guessedCity.size(); i++) {
-            if (guessedCity.get(i).equals(usedLetters.get(numOfGuesses - 1))) {
-                test[i] = usedLetters.get(numOfGuesses - 1);
-            } else if (guessedCity.get(i).equals((usedLetters.get(numOfGuesses - 1))) && i == 0) {
-                test[i] = usedLetters.get(numOfGuesses - 1);
+            if (guessedCity.get(i).equals(usedLetters.get(usedLetters.size() - 1)) && test[i] == '_') {
+                test[i] = usedLetters.get(usedLetters.size() - 1);
+            } else if (guessedCity.get(i).equals((usedLetters.get(usedLetters.size() - 1))) && i == 0) {
+                test[i] = usedLetters.get(usedLetters.size() - 1);
             } else if (test[i] == ' ') {
                 continue;
             } else {
