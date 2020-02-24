@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class Game {
-    /*
+     /*
      *
      *       VARIABLES
      *
@@ -53,7 +53,7 @@ public class Game {
             for (int j = 0; i < revealLetter().length; j++) {
                 if (revealLetter()[i] == '_') {
                     char[] test = underscoredCity();
-                    System.out.println(guessLetter());
+                    guessLetter();
                     // how to set a permanent variable in revealdLetters, not to be always rewritten
                     System.out.println(revealLetter());
 
@@ -114,10 +114,10 @@ public class Game {
     public static char[] revealLetter() {
         char[] test = underscoredCity();
         for(int i = 0; i < guessedCity.size(); i++) {
-            if (guessedCity.get(i).equals(usedLetters.get(usedLetters.size() - 1)) && test[i] == '_') {
-                test[i] = usedLetters.get(usedLetters.size() - 1);
-            } else if (guessedCity.get(i).equals((usedLetters.get(usedLetters.size() - 1))) && i == 0) {
-                test[i] = usedLetters.get(usedLetters.size() - 1);
+            if (guessedCity.get(i) == usedLetters.get(usedLetters.size()) && test[i] == '_') {
+                test[i] = usedLetters.get(usedLetters.size() );
+            } else if (guessedCity.get(i) == usedLetters.get(usedLetters.size()) && i == 0) {
+                test[i] = usedLetters.get(usedLetters.size());
             } else if (test[i] == ' ') {
                 continue;
             } else {
