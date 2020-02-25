@@ -16,7 +16,6 @@ public class Game {
     private static List<Character> guessedCity = new ArrayList<Character>();
     private static List<Character> usedLetters = new ArrayList<Character>();
     private static int numOfGuesses;
-    private static String revealedLetters;
     private static List<Character> underscoreCity = new ArrayList<Character>();
 
     /*
@@ -57,7 +56,8 @@ public class Game {
                     break;
                 }
         if (numOfGuesses == 10 && underscoreCity.contains('_')) {
-            System.out.println("Game over!");
+            System.out.println();
+            System.out.println("GAME OVER!");
             break;
         }
         }
@@ -119,7 +119,7 @@ public class Game {
                 underscoreCity.set(i, guessedCity.get(i));
             }
         }
-        System.out.println("You have guessed (" + numOfGuesses + "). Used letters: " + usedLetters);
+        System.out.println("Number of guesses: " + numOfGuesses + ". Used letters: " + usedLetters);
         return false;
     }
 }
