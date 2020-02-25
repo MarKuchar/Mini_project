@@ -1,76 +1,98 @@
 package guessing_game;
-import java.util.*;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
+public class Game{
 
-public class Game {
     /*
      *
-     *       VARIABLES
+     *   VARIABLES
      *
      * */
 
     private static String FILE_PATH = "cities.txt";
-    private static List<String> cities = new ArrayList<String>();
+    private static List<String> cities = new ArrayList<>();
     private static List<Character> guessedCity = new ArrayList<Character>();
-    private static List<Character> usedLetters = new ArrayList<Character>();
-    private static int numOfGuesses;
-    private static String revealedLetters;
     private static List<Character> underscoreCity = new ArrayList<Character>();
+    private static List<Character> usedLetters = new ArrayList<Character>();
+    private static int numOfGuesses = 0;
 
     /*
-    *
-    * Constructor
-    *
-    * */
+     *
+     *  CONSTRUCTOR
+     *
+     * */
 
     public Game() {
         this.guessedCity= new ArrayList<Character>();
-   }
-    /*
-    *
-    *       METHODS
-    *
-    * */
-
-    public static void randomCity() {
-        Random random = new Random();
-        String city = cities.get(random.nextInt(cities.size()));
-        for (char letter : city.toCharArray()) {
-            guessedCity.add(letter);
-        }
     }
 
-    public void newGame() {
+
+    /*
+     *
+     *   METHODS
+     *
+     * */
+
+    public void newGame(){
+        boolean isWin = false;
         createCities();
-        randomCity();
+        choseRandomCity();
         underscoredCity();
         System.out.println(guessedCity);
-        for (int i = 0; i < 10; i++) {
-            System.out.println("used letters: "+usedLetters);
-            if (underscoreCity.contains('_')) {
-                    guessLetter();
-                    // how to set a permanent variable in reveald Letters, not to be always rewritten
-                    revealLetter();
-                    System.out.println(Arrays.toString(underscoreCity.toArray()));
-
-                } else if (!underscoreCity.contains('_')) {
-                    System.out.println("You guessed the city!");
+        System.out.println(underscoreCity);
+        Scanner scan = new Scanner(System.in);
+        char letter;
+        do{
+            try{
+                do{
+                    System.out.print("Guess a letter: ");
+                    String input = scan.nextLine();
+                    letter = input.charAt(0);
+                    boolean found = false;
+                    if (validInput(letter)){
+                        for (int x = 0; x < guessedCity.size();x++){
+                            if(underscoreCity.get(x).equals(letter)){
+                                usedLetters.add(letter);
+                                numOfGuesses++;
+                            }else if (guessedCity.get(x).equals(letter)){
+                                underscoreCity.set(x,letter);
+                                found= true;
+                            }
+                        }
+                        if (!found && !usedLetters.contains(letter)){
+                            usedLetters.add(letter);
+                            numOfGuesses++;
+                        }
+                        System.out.println(underscoreCity);
+                        System.out.print("You have guessed ("+numOfGuesses+") wrong letters:");
+                        for (char myLetter :usedLetters){
+                            System.out.print(myLetter);
+                        }
+                        System.out.println("");
+                        if (!underscoreCity.contains('_')){
+                            isWin = true;
+                            break;
+                        }
+                    }else{
+                        System.out.println("Please try again, remember that you only can put 1 character and must be between A/a to Z/z");
+                    }
+                }while(numOfGuesses<=10);
+                if (isWin){
+                    System.out.println("You win!");
+                }else{
+                    System.out.println("You lose!");
                 }
-        }
-        System.out.println("Game over!");
-    }
-
-
-    public static void underscoredCity(){
-        for (int i = 0; i < guessedCity.size(); i++) {
-            if (guessedCity.get(i) == ' ') {
-                underscoreCity.add((" ").charAt(0));
-            } else {
-                underscoreCity.add(("_").charAt(0));
+            }catch (Exception e){
+                System.out.println("Something unexpected happened, remember that you can't put as input nothing ");
             }
-        }
+        }while (true && !isWin);
     }
 
     public static void createCities(){
@@ -86,42 +108,31 @@ public class Game {
             System.out.println("Error reading: " + FILE_PATH);
         }
     }
-    public static void guessLetter(){
-        Scanner scan = new Scanner(System.in);
-        char letter;
-        boolean validInput = false;
-        do{
-            System.out.println("Guess letter: ");
-            String input = scan.nextLine();
-            letter = input.charAt(0);
-            if(!(letter >= 65 && letter <= 122 && input.length()<2)){
-                System.out.println("Please try again, remember that you only can put 1 character and must be between A/a to Z/z");
-                validInput = false;
-            }else{
-                if(usedLetters.contains(letter)){
-                    validInput = false;
-                    System.out.println("You already used that letter");
-                }else{
-                    numOfGuesses++;
-                    usedLetters.add(String.valueOf(letter).toLowerCase().charAt(0));
-                    usedLetters.add(String.valueOf(letter).toUpperCase().charAt(0));
-                }
-            }
-        }while(validInput);
-
+    private void choseRandomCity() {
+        Random random = new Random();
+        String city = cities.get(random.nextInt(cities.size()));
+        for (char letter : city.toCharArray()) {
+            guessedCity.add(letter);
+        }
     }
 
-    public static boolean revealLetter() {
-        for(int i = 0; i < guessedCity.size(); i++) {
-            if(usedLetters.contains(guessedCity.get(i))){
-                underscoreCity.set(i, guessedCity.get(i));
-                return true;
-            }else if (usedLetters.contains(guessedCity.get(i)) && i == 0){
-                underscoreCity.set(i, guessedCity.get(i));
-                return true;
+    public static boolean validInput(Character letter){
+        if(letter >= 65 && letter <= 122){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static void underscoredCity(){
+        for (int i = 0; i < guessedCity.size(); i++) {
+            if (guessedCity.get(i) == ' ') {
+                underscoreCity.add((" ").charAt(0));
+            } else {
+                underscoreCity.add(("_").charAt(0));
             }
         }
-        System.out.println("You have guessed ("+numOfGuesses+") wrong letter:"+ usedLetters.get(0) );
-        return false;
+    }
+    public void printList(){
+
     }
 }
