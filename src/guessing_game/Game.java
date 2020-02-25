@@ -1,5 +1,4 @@
 package guessing_game;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -45,7 +44,6 @@ public class Game{
         createCities();
         choseRandomCity();
         underscoredCity();
-        System.out.println(guessedCity);
         System.out.println(underscoreCity);
         Scanner scan = new Scanner(System.in);
         char letter;
