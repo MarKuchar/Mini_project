@@ -47,18 +47,19 @@ public class Game {
         randomCity();
         underscoredCity();
         System.out.println(guessedCity);
-        for (int i = 0; i < 10; i++) {
+        while (numOfGuesses < 10) {
                 if (underscoreCity.contains('_')) {
                     guessLetter();
                     revealLetter();
                     System.out.println(Arrays.toString(underscoreCity.toArray()));
-                } else if (i < 10 && !underscoreCity.contains('_')) {
+                } else if (numOfGuesses < 10 && !underscoreCity.contains('_')) {
                     System.out.print("You guessed the city!");
                     break;
-                } else if (i == 10 && underscoreCity.contains('_')) {
-                    System.out.println("Game over!");
-                    break;
                 }
+        if (numOfGuesses == 10 && underscoreCity.contains('_')) {
+            System.out.println("Game over!");
+            break;
+        }
         }
     }
 
@@ -118,7 +119,7 @@ public class Game {
                 underscoreCity.set(i, guessedCity.get(i));
             }
         }
-        System.out.println("You have guessed (" + numOfGuesses + ") wrong letter:" + usedLetters.get(0));
+        System.out.println("You have guessed (" + numOfGuesses + "). Used letters: " + usedLetters);
         return false;
     }
 }
